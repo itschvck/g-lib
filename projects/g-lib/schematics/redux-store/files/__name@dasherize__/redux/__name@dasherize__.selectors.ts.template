@@ -1,0 +1,27 @@
+import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { <%= classify(name) %>State } from "./state/<%= dasherize(name) %>.state";
+import { <%= camelize(name) %>Key } from "./config/<%= dasherize(name) %>.key";
+import { <%= camelize(name) %>Adapter } from "./config/<%= dasherize(name) %>.adapter";
+
+const <%= camelize(name) %>State$ = createFeatureSelector<<%= classify(name) %>State>(<%= camelize(name) %>Key);
+const {selectAll, selectEntities } = <%= camelize(name) %>Adapter.getSelectors();
+const all<%= classify(name) %>State$ = createSelector(<%= camelize(name) %>State$, selectAll);
+const entities<%= classify(name) %>State$ = createSelector(<%= camelize(name) %>State$, selectEntities);
+const <%= camelize(name) %>s$ = createSelector(
+  all<%= classify(name) %>State$,
+  <%= camelize(name) %>s => <%= camelize(name) %>s
+);
+const <%= camelize(name) %>Entities$ = createSelector(
+  entities<%= classify(name) %>State$,
+  <%= camelize(name) %>s => <%= camelize(name) %>s
+);
+const <%= camelize(name) %>ById$ = (id: number) => createSelector(
+  entities<%= classify(name) %>State$,
+  <%= camelize(name) %>s => <%= camelize(name) %>s[id]
+);
+
+export const s = {
+  <%= camelize(name) %>s$,
+  <%= camelize(name) %>Entities$,
+  <%= camelize(name) %>ById$
+}

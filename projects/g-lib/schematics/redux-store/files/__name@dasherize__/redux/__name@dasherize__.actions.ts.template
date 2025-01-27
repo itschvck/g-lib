@@ -1,0 +1,43 @@
+import { createAction, emptyProps, props } from "@ngrx/store";
+import { <%= classify(name) %>Response } from '../models/responses/<%= dasherize(name) %>.response';
+import { New<%= classify(name) %>Request } from '../models/requests/new-<%= dasherize(name) %>.request';
+import { Edit<%= classify(name) %>Request } from '../models/requests/edit-<%= dasherize(name) %>.request';
+import { Remove<%= classify(name) %>Request } from '../models/requests/remove-<%= dasherize(name) %>.request';
+
+// get <%= classify(name) %>
+const <%= camelize(name) %>Load = createAction('[<%= classify(name) %>] Load', emptyProps);
+const <%= camelize(name) %>OK = createAction('[<%= classify(name) %>] OK', props<{ <%= camelize(name) %>s: <%= classify(name) %>Response[] }>());
+const <%= camelize(name) %>Error = createAction('[<%= classify(name) %>] Error', props<{ error: string }>());
+
+// add <%= classify(name) %>
+const add<%= classify(name) %>Load = createAction('[Add <%= classify(name) %>] Load', props<{ request: New<%= classify(name) %>Request }>());
+const add<%= classify(name) %>OK = createAction('[Add <%= classify(name) %>] OK', props<{ <%= camelize(name) %>: <%= classify(name) %>Response }>());
+const add<%= classify(name) %>Error = createAction('[Add <%= classify(name) %>] Error', props<{ error: string }>());
+
+// edit <%= classify(name) %>
+const edit<%= classify(name) %>Load = createAction('[Edit <%= classify(name) %>] Load', props<{ request: Edit<%= classify(name) %>Request }>());
+const edit<%= classify(name) %>OK = createAction('[Edit <%= classify(name) %>] OK', props<{ <%= camelize(name) %>: <%= classify(name) %>Response }>());
+const edit<%= classify(name) %>Error = createAction('[Edit <%= classify(name) %>] Error', props<{ error: string }>());
+
+// remove <%= classify(name) %>
+const remove<%= classify(name) %>Load = createAction('[Remove <%= classify(name) %>] Load', props<{ request: Remove<%= classify(name) %>Request }>());
+const remove<%= classify(name) %>OK = createAction('[Remove <%= classify(name) %>] OK', props<{ id: number }>());
+const remove<%= classify(name) %>Error = createAction('[Remove <%= classify(name) %>] Error', props<{ error: string }>());
+
+export const a = {
+  <%= camelize(name) %>Load,
+  <%= camelize(name) %>OK,
+  <%= camelize(name) %>Error,
+
+  add<%= classify(name) %>Load,
+  add<%= classify(name) %>OK,
+  add<%= classify(name) %>Error,
+
+  edit<%= classify(name) %>Load,
+  edit<%= classify(name) %>OK,
+  edit<%= classify(name) %>Error,
+
+  remove<%= classify(name) %>Load,
+  remove<%= classify(name) %>OK,
+  remove<%= classify(name) %>Error
+}

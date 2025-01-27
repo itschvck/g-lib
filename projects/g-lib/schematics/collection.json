@@ -1,0 +1,19 @@
+{
+  "schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Add Custom Library to the project",
+      "factory": "./ng-add/index#ngAdd"
+    },
+    "update-app-config": {
+      "description": "Update App Config",
+      "factory": "./ng-add/index#updateAppConfig"
+    },
+    "redux-store": {
+      "description": "This schematics generates a ngrx store for an entity",
+      "factory": "./redux-store/index#reduxStore",
+      "schema": "./redux-store/schema.json",
+      "aliases": ["rs"]
+    }
+  }
+}

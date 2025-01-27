@@ -1,0 +1,4 @@
+import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
+import { <%= classify(name) %>Response } from "../../models/responses/<%= dasherize(name) %>.response";
+
+export const <%= camelize(name) %>Adapter: EntityAdapter<<%= classify(name) %>Response> = createEntityAdapter<<%= classify(name) %>Response>();

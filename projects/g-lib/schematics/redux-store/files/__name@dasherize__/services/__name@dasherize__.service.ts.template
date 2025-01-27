@@ -1,0 +1,28 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { <%= classify(name) %>Response } from '../models/responses/<%= dasherize(name) %>.response';
+import { New<%= classify(name) %>Request } from '../models/requests/new-<%= dasherize(name) %>.request';
+import { Edit<%= classify(name) %>Request } from '../models/requests/edit-<%= dasherize(name) %>.request';
+import { Remove<%= classify(name) %>Request } from '../models/requests/remove-<%= dasherize(name) %>.request';
+
+@Injectable({ providedIn: 'root' })
+export class <%= classify(name) %>Service {
+  http = inject(HttpClient);
+
+  get<%= classify(name) %>(): Observable<<%= classify(name) %>Response[]> {
+    return this.http.get<<%= classify(name) %>Response[]>(``, { withCredentials: true });
+  }
+
+  add<%= classify(name) %>(request: New<%= classify(name) %>Request): Observable<<%= classify(name) %>Response> {
+    return this.http.post<<%= classify(name) %>Response>(``, request, { withCredentials: true });
+  }
+
+  edit<%= classify(name) %>(request: Edit<%= classify(name) %>Request): Observable<<%= classify(name) %>Response> {
+    return this.http.put<<%= classify(name) %>Response>(``, request, { withCredentials: true });
+  }
+
+  remove<%= classify(name) %>(request: Remove<%= classify(name) %>Request): Observable<void> {
+    return this.http.delete<void>(`/${request.id}`, { body: request, withCredentials: true });
+  }
+}

@@ -1,0 +1,4 @@
+export type Edit<%= classify(name) %>Request = {
+  id: number;
+  // ...properties
+};

@@ -1,0 +1,51 @@
+import { inject, Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { Router } from "@angular/router";
+import { catchError, distinctUntilChanged, exhaustMap, map, of } from "rxjs";
+import { <%= camelize(name) %>Domain } from "./config/<%= dasherize(name) %>.domain";
+import { <%= classify(name) %>Service } from "../services/<%= dasherize(name) %>.service";
+
+@Injectable()
+export class <%= classify(name) %>Effects {
+  a$ = inject(Actions);
+  store = inject(Store);
+  service = inject(<%= classify(name) %>Service);
+  router = inject(Router);
+
+  get<%= classify(name) %>s$ = createEffect(() => this.a$.pipe(
+    ofType(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Load),
+    distinctUntilChanged(),
+    exhaustMap(a => this.service.get<%= classify(name) %>().pipe(
+      map(<%= camelize(name) %>s => <%= camelize(name) %>Domain.a.<%= camelize(name) %>OK({ <%= camelize(name) %>s: <%= camelize(name) %>s })),
+      catchError((error: any) => of(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Error({ error: 'error' })))
+    ))
+  ));
+
+  add<%= classify(name) %>$ = createEffect(() => this.a$.pipe(
+    ofType(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Load),
+    distinctUntilChanged(),
+    exhaustMap(a => this.service.add<%= classify(name) %>(a.request).pipe(
+      map(<%= camelize(name) %> => <%= camelize(name) %>Domain.a.add<%= classify(name) %>OK({ <%= camelize(name) %>: <%= camelize(name) %> })),
+      catchError((error: any) => of(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Error({ error: 'error' })))
+    ))
+  ));
+
+  edit<%= classify(name) %>$ = createEffect(() => this.a$.pipe(
+    ofType(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Load),
+    distinctUntilChanged(),
+    exhaustMap(a => this.service.edit<%= classify(name) %>(a.request).pipe(
+      map(<%= camelize(name) %> => <%= camelize(name) %>Domain.a.edit<%= classify(name) %>OK({ <%= camelize(name) %>: <%= camelize(name) %> })),
+      catchError((error: any) => of(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Error({ error: 'error' })))
+    ))
+  ));
+
+  remove<%= classify(name) %>$ = createEffect(() => this.a$.pipe(
+    ofType(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Load),
+    distinctUntilChanged(),
+    exhaustMap(a => this.service.remove<%= classify(name) %>(a.request).pipe(
+      map(<%= camelize(name) %> => <%= camelize(name) %>Domain.a.remove<%= classify(name) %>OK({ id: a.request.id })),
+      catchError((error: any) => of(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Error({ error: 'error' })))
+    ))
+  ));
+}

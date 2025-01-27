@@ -1,0 +1,6 @@
+import { a } from "../<%= dasherize(name) %>.actions";
+import { s } from "../<%= dasherize(name) %>.selectors";
+
+export const <%= camelize(name) %>Domain = {
+  a, s
+}
