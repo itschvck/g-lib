@@ -1,4 +1,0 @@
-export const environment = {
-  urlApi: 'http://localhost:XXXX',
-  prod: false
-}

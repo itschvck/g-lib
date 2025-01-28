@@ -1,3 +1,0 @@
-export const authGuard = (): boolean => {
-  return true;
-}

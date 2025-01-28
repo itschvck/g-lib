@@ -5,19 +5,9 @@
       "description": "Add Custom Library to the project",
       "factory": "./ng-add/index#ngAdd"
     },
-    "generate-environments": {
-      "description": "Generates Environments Files",
-      "factory": "./ng-add/index#generateEnvironments"
-    },
-    "init-project": {
-      "description": "Initialize the projects with DJ's standards",
-      "factory": "./init-project#initProject",
-      "schema": "./init-project/schema.json",
-      "aliases": ["init"]
-    },
-    "apply-templates-fn": {
-      "description": "Applies the templates",
-      "factory": "./init-project#applyTemplatesFn"
+    "update-app-config": {
+      "description": "Update App Config",
+      "factory": "./ng-add/index#updateAppConfig"
     },
     "redux-store": {
       "description": "This schematics generates a ngrx store for an entity",
