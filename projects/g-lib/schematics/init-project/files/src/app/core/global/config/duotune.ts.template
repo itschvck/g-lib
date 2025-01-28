@@ -1,0 +1,59 @@
+const baseUrl = './assets/icons/duotune';
+
+const abstract = (icon: string) => `${ baseUrl }/abstract/${ icon }.svg`;
+const archive = (icon: string) => `${ baseUrl }/archive/${ icon }.svg`;
+const arrows = (icon: string) => `${ baseUrl }/arrows/${ icon }.svg`;
+const art = (icon: string) => `${ baseUrl }/art/${ icon }.svg`;
+const business = (icon: string) => `${ baseUrl }/business/${ icon }.svg`;
+const coding = (icon: string) => `${ baseUrl }/coding/${ icon }.svg`;
+const communication = (icon: string) => `${ baseUrl }/communication/${ icon }.svg`;
+const design = (icon: string) => `${ baseUrl }/design/${ icon }.svg`;
+const devices = (icon: string) => `${ baseUrl }/devices/${ icon }.svg`;
+const ecommerce = (icon: string) => `${ baseUrl }/ecommerce/${ icon }.svg`;
+const electronics = (icon: string) => `${ baseUrl }/electronics/${ icon }.svg`;
+const files = (icon: string) => `${ baseUrl }/files/${ icon }.svg`;
+const finance = (icon: string) => `${ baseUrl }/finance/${ icon }.svg`;
+const general = (icon: string) => `${ baseUrl }/general/${ icon }.svg`;
+const graphs = (icon: string) => `${ baseUrl }/graphs/${ icon }.svg`;
+const itNetwork = (icon: string) => `${ baseUrl }/it-${ icon }.svgnetwork/`;
+const layouts = (icon: string) => `${ baseUrl }/layouts/${ icon }.svg`;
+const location = (icon: string) => `${ baseUrl }/location/${ icon }.svg`;
+const maps = (icon: string) => `${ baseUrl }/maps/${ icon }.svg`;
+const medicine = (icon: string) => `${ baseUrl }/medicine/${ icon }.svg`;
+const social = (icon: string) => `${ baseUrl }/social/${ icon }.svg`;
+const technology = (icon: string) => `${ baseUrl }/technology/${ icon }.svg`;
+const text = (icon: string) => `${ baseUrl }/text/${ icon }.svg`;
+const time = (icon: string) => `${ baseUrl }/time/${ icon }.svg`;
+const typography = (icon: string) => `${ baseUrl }/typography/${ icon }.svg`;
+const users = (icon: string) => `${ baseUrl }/users/${ icon }.svg`;
+const weather = (icon: string) => `${ baseUrl }/weather/${ icon }.svg`;
+
+export const duotune = {
+  abstract,
+  archive,
+  arrows,
+  art,
+  business,
+  coding,
+  communication,
+  design,
+  devices,
+  ecommerce,
+  electronics,
+  files,
+  finance,
+  general,
+  graphs,
+  itNetwork,
+  layouts,
+  location,
+  maps,
+  medicine,
+  social,
+  technology,
+  text,
+  time,
+  typography,
+  users,
+  weather
+}

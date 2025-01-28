@@ -1,0 +1,10 @@
+import { Routes } from '@angular/router';
+import { LayoutRoutes } from './core/layout/layout.routes';
+
+export const routes: Routes = [
+  {
+    path: '',
+    loadChildren: () => import('./core/layout/layout.routes')
+       .then(r => r.LayoutRoutes)
+  }
+];

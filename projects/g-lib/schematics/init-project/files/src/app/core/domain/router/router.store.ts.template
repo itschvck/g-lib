@@ -1,0 +1,49 @@
+import { effect, inject, Injectable, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterStateSnapshot } from '@angular/router';
+import { filter, map } from 'rxjs';
+import { RouterState } from './state/router.state';
+import { toSignal } from '@angular/core/rxjs-interop';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class RouterStore {
+  readonly url = signal<string>('');
+  readonly params = signal<{ [key: string]: string }>({});
+  readonly queryParams = signal<{ [key: string]: string }>({});
+
+  private router = inject(Router);
+
+  constructor() {
+
+    const snapshot = toSignal(
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd),
+        map(() => this.router.routerState.snapshot)
+      )
+    );
+
+    effect(() => {
+      if (snapshot()) {
+        const state = this.getRouterState(snapshot()!);
+        this.url.set(state.url);
+        this.params.set(state.params);
+        this.queryParams.set(state.queryParams);
+      }
+    });
+  }
+
+  private getRouterState(snapshot: RouterStateSnapshot): RouterState {
+    let route = snapshot.root;
+
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+
+    return {
+      url: snapshot.url,
+      params: route.params,
+      queryParams: snapshot.root.queryParams,
+    };
+  }
+}
