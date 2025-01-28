@@ -1,0 +1,3 @@
+<<%= prefix %>-header></<%= prefix %>-header>
+<router-outlet></router-outlet>
+<<%= prefix %>-footer></<%= prefix %>-footer>
