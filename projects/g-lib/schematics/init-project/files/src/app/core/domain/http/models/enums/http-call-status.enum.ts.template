@@ -1,6 +1,0 @@
-export enum HttpCallStatus {
-  Pending = 'pending',
-  Loading = 'loading',
-  Error = 'error',
-  Success = 'success'
-}
