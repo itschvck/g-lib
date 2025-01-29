@@ -1,6 +1,9 @@
 import { ActionReducerMap } from "@ngrx/store";
 import { AppState } from "./state/app.state";
+import { authKey } from "../../domain/auth/redux/config/auth.key";
+import { authReducer } from "../../domain/auth/redux/auth.reducers";
 
 export const appReducers: ActionReducerMap<AppState> = {
   // [entityKey]: entityReducer
+  [authKey]: authReducer,
 }

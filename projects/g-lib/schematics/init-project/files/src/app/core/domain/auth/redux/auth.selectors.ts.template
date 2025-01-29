@@ -1,0 +1,15 @@
+import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { AuthState } from "./state/auth.state";
+import { authKey } from "./config/auth.key";
+import { authAdapter } from "./config/auth.adapter";
+
+const authState$ = createFeatureSelector<AuthState>(authKey);
+const { selectAll, selectEntities } = authAdapter.getSelectors();
+const allAuthState$ = createSelector(authState$, selectAll);
+const status$ = createSelector(authState$, auth =>  auth.status);
+const loggedUser$ = createSelector(allAuthState$, u => u[0]);
+
+export const s = {
+  status$,
+  loggedUser$
+}

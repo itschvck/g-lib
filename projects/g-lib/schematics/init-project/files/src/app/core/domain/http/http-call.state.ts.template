@@ -1,12 +1,12 @@
-import { HttpCallStatus } from './models/enums/http-call-status.enum';
+import { HttpCallStatusEnum } from './models/enums/http-call-status.enum';
 import { IError } from "./models/responses/error.response";
 
 export type HttpCallState = {
-  status: HttpCallStatus,
+  status: HttpCallStatusEnum,
   error: IError | undefined;
 }
 
 export const httpCallStateInitialValue: HttpCallState = {
-  status: HttpCallStatus.Pending,
+  status: HttpCallStatusEnum.Pending,
   error: undefined
 }

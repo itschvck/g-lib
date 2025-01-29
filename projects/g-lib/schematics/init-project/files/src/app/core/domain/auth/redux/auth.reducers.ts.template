@@ -1,0 +1,27 @@
+import { authAdapter } from "./config/auth.adapter";
+import { authDomain } from "./config/auth.domain";
+import { initialState } from "./state/auth.state";
+import { createReducer, on } from "@ngrx/store";
+import { HttpCallStatusEnum } from "../../http/models/enums/http-call-status.enum";
+
+export const authReducer = createReducer(
+  initialState,
+  
+  // init user
+  on(authDomain.a.initUser, (s$) => ({ ...s$, status: HttpCallStatusEnum.Loading, error: undefined })),
+  on(authDomain.a.initUserOK, (s$, { user }) => authAdapter.upsertOne(user, { ...s$, status: HttpCallStatusEnum.Success, error: undefined })),
+  on(authDomain.a.initUserError, (s$, { e }) => authAdapter.getInitialState({ status: HttpCallStatusEnum.Error, error: e })),
+  
+  // login
+  on(authDomain.a.login, (s$) => ({ ...s$, status: HttpCallStatusEnum.Loading, error: undefined })),
+  on(authDomain.a.loginOK, (s$, { user }) => authAdapter.upsertOne(user, { ...s$, status: HttpCallStatusEnum.Success, error: undefined })),
+  on(authDomain.a.loginError, (s$, { e }) => authAdapter.getInitialState({ status: HttpCallStatusEnum.Error, error: e })),
+  
+  // logout
+  on(authDomain.a.logout, (s$) => ({ ...s$, status: HttpCallStatusEnum.Loading, error: undefined })),
+  on(authDomain.a.logoutOK, (s$, { idUser }) => authAdapter.removeOne(idUser, { ...s$, status: HttpCallStatusEnum.Success, error: undefined })),
+  on(authDomain.a.logoutError, (s$, { e }) =>({ ...s$, status: HttpCallStatusEnum.Error, error: e })),
+  
+  // token expired
+  on(authDomain.a.tokenExpired, (s$) => authAdapter.getInitialState({ status: HttpCallStatusEnum.Pending, error: undefined })),
+);

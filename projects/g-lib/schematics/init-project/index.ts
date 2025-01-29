@@ -1,7 +1,7 @@
 import {
   apply,
   applyTemplates,
-  chain,
+  chain, externalSchematic,
   filter,
   MergeStrategy,
   mergeWith,
@@ -12,16 +12,15 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { normalize, strings } from '@angular-devkit/core';
-import { addPackageJsonDependency, NodeDependency, NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { InitProjectSchema } from './init-project.interface';
 
 export function initProject(options: InitProjectSchema): Rule {
-  return (tree: Tree, context: SchematicContext) => {
-    context.logger.info('Starting schematic: initProject');
+  return (_tree: Tree, _context: SchematicContext) => {
+    _context.logger.info('Starting schematic: initProject');
 
     // Step 1: Read angular.json and extract project info
-    const workspaceConfig = tree.read('angular.json');
+    const workspaceConfig = _tree.read('angular.json');
     if (!workspaceConfig) {
       throw new Error('Could not find angular.json');
     }
@@ -34,41 +33,37 @@ export function initProject(options: InitProjectSchema): Rule {
 
     const projectConfig = workspaceJson.projects[projectName];
     if (!projectConfig) {
-      throw new Error(`Project "${projectName}" not found in angular.json.`);
+      throw new Error(`Project "${ projectName }" not found in angular.json.`);
     }
 
-    // Add dependencies to package.json
-    const dependencies: NodeDependency[] = [
-      { type: NodeDependencyType.Dev, name: 'tailwindcss', version: '^3.4.17' },
-      { type: NodeDependencyType.Default, name: 'moment', version: '^2.30.1' },
-      { type: NodeDependencyType.Default, name: 'ng-inline-svg-2', version: '^15.0.1' },
+    // Install npm packages separately with force flag
+
+    let npmPackages = [
+      { packageManager: 'npm', packageName: 'tailwindcss @tailwindcss/postcss postcss --force' },
+      { packageManager: 'npm', packageName: 'moment --save' },
+      { packageManager: 'npm', packageName: 'ng-inline-svg-2' },
     ];
 
     if (options.store === 'normal') {
-      dependencies.push(
-        { type: NodeDependencyType.Default, name: '@ngrx/store', version: '^19.0.0' },
-        { type: NodeDependencyType.Default, name: '@ngrx/entity', version: '^19.0.0' },
-        { type: NodeDependencyType.Default, name: '@ngrx/effects', version: '^19.0.0' },
-        { type: NodeDependencyType.Default, name: '@ngrx/operators', version: '^19.0.0' },
-        { type: NodeDependencyType.Default, name: '@ngrx/store-devtools', version: '^19.0.0' }
-      );
-    } else if (options.store === 'signal') {
-      dependencies.push(
-        { type: NodeDependencyType.Default, name: '@ngrx/operators', version: '^19.0.0' },
-        { type: NodeDependencyType.Default, name: '@ngrx/signals', version: '^19.0.0' }
+      npmPackages.push(
+        { packageManager: 'npm', packageName: '@ngrx/store @ngrx/entity @ngrx/effects @ngrx/operators @ngrx/store-devtools' }
       );
     }
 
-    dependencies.forEach((dep) => {
-      addPackageJsonDependency(tree, dep);
-      context.logger.info(`Added dependency: ${dep.name}`);
+    if (options.store === 'signal') {
+      npmPackages.push(
+        { packageManager: 'npm', packageName: '@ngrx/operators @ngrx/signals' }
+      );
+    }
+
+    npmPackages.forEach((npmPkg) => {
+      _context.addTask(new NodePackageInstallTask(npmPkg));
     });
 
-    // Schedule the NodePackageInstallTask
-    context.addTask(new NodePackageInstallTask());
+    _context.logger.info('Adding Environments...');
 
     // Apply templates directly
-    return applyTemplatesFn(options, projectName, projectConfig.prefix)(tree, context);
+    return applyTemplatesFn(options, projectName, projectConfig.prefix)(_tree, _context);
   };
 }
 
@@ -78,7 +73,22 @@ export function applyTemplatesFn(options: InitProjectSchema, projectName: string
     // Define the source for your templates
     const templateSource = apply(url('./files'), [
       filter((path) => {
-        return !(path.includes('app-store') && options.store !== 'normal');
+        if (path.includes('src/app/core/app') && options.store !== 'normal') {
+          return false;
+        }
+        // Exclude "src/app/domain/auth/redux" and everything inside it if store is not "normal"
+        if (path.includes('src/app/core/domain/auth/redux') && options.store !== 'normal') {
+          return false;
+        }
+        // Exclude "auth.store.ts.template" if store is not "signal"
+        if (path.includes('src/app/core/domain/auth/auth.store.ts.template') && options.store !== 'signal') {
+          return false;
+        }
+        // Ensure ".postcssrc.json.template" is always included
+        if (path.includes('.postcssrc.json.template')) {
+          return true; // Always include this file
+        }
+        return true;
       }),
       applyTemplates({
         classify: strings.classify,
@@ -90,6 +100,12 @@ export function applyTemplatesFn(options: InitProjectSchema, projectName: string
       }),
       move(normalize(`./`)),
     ]);
-    return chain([mergeWith(templateSource, MergeStrategy.Overwrite)]);
+    return chain([generateEnvironments(projectName), mergeWith(templateSource, MergeStrategy.Overwrite)]);
   };
+}
+
+export function generateEnvironments(projectName: string): Rule {
+  return externalSchematic('@schematics/angular', 'environments', {
+    project: projectName,
+  });
 }

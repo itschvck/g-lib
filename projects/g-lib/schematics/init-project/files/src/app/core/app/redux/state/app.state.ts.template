@@ -1,0 +1,7 @@
+import { authKey } from "../../../auth/redux/config/auth.key";
+import { AuthState } from "../../../auth/redux/state/auth.state";
+
+export type AppState = {
+  // [entityKey]: EntityState
+  [authKey]: AuthState;
+};

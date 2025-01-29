@@ -7,9 +7,9 @@ import { authInterceptor } from "./core/interceptors/auth.interceptor";
 import { errorInterceptor } from "./core/interceptors/error.interceptor";
 import { initFn } from "./core/global/fn/init.fn";
 <% if (store === 'normal') { %>
-import { AppState } from "./core/app-store/redux/state/app.state";
-import { appReducers } from "./core/app-store/redux/app.reducers";
-import { appEffects } from "./core/app-store/redux/app.effects";
+import { AppState } from "./core/app/redux/state/app.state";
+import { appReducers } from "./core/app/redux/app.reducers";
+import { appEffects } from "./core/app/redux/app.effects";
 import { provideStore } from "@ngrx/store";
 import { provideEffects } from "@ngrx/effects";
 import { provideStoreDevtools } from "@ngrx/store-devtools";

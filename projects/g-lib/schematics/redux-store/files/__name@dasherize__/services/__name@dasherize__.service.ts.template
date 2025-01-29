@@ -23,6 +23,6 @@ export class <%= classify(name) %>Service {
   }
 
   remove<%= classify(name) %>(request: Remove<%= classify(name) %>Request): Observable<void> {
-    return this.http.delete<void>(`/${request.id}`, { body: request, withCredentials: true });
+    return this.http.delete<void>(`/${ request.id }`, { body: request, withCredentials: true });
   }
 }
