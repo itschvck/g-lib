@@ -1,0 +1,11 @@
+import { Roles } from './roles';
+
+export type InternalUserLoggedResponse = {
+  id: string;
+  matricola: string;
+  cognome: string;
+  nome: string;
+  accessId: number;
+  email?: string;
+  roles: Roles[];
+}

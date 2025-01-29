@@ -1,0 +1,4 @@
+import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
+import { InternalUserLoggedResponse } from "../../models/responses/internal-user-logged.response";
+
+export const authAdapter: EntityAdapter<InternalUserLoggedResponse> = createEntityAdapter<InternalUserLoggedResponse>();

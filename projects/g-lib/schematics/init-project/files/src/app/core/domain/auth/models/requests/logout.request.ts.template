@@ -1,0 +1,4 @@
+export type LogoutRequest = {
+  idUser: string;
+  idAccess: number;
+}

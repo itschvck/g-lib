@@ -1,0 +1,27 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { InternalUserLoggedResponse } from "../models/responses/internal-user-logged.response";
+import { environment } from "../../../../../environments/environment.development";
+import { LoginRequest } from "../models/requests/login.request";
+import { LogoutRequest } from "../models/requests/logout.request";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  http = inject(HttpClient);
+
+  initUser(): Observable<InternalUserLoggedResponse> {
+    return this.http.get<InternalUserLoggedResponse>(environment.urlApi + `/me`);
+  }
+
+  login(request: LoginRequest): Observable<InternalUserLoggedResponse> {
+    return this.http.post<InternalUserLoggedResponse>(environment.urlApi + `/login`, request);
+  }
+
+  logout(request: LogoutRequest): Observable<boolean> {
+    const c = { idAccess: request.idAccess };
+    return this.http.post<boolean>(environment.urlApi + `/logout`, request);
+  }
+}

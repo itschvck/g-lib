@@ -1,0 +1,6 @@
+import { a } from "../auth.actions";
+import { s } from "../auth.selectors";
+
+export const authDomain = {
+  a, s
+}

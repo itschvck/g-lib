@@ -1,0 +1,12 @@
+import { EntityState } from "@ngrx/entity";
+import { InternalUserLoggedResponse } from "../../models/responses/internal-user-logged.response";
+import { authAdapter } from '../config/auth.adapter';
+import { HttpCallState } from "../../../http/http-call.state";
+import { HttpCallStatusEnum } from "../../../http/models/enums/http-call-status.enum";
+
+export type AuthState = { } & EntityState<InternalUserLoggedResponse> & HttpCallState;
+
+export const initialState: AuthState = authAdapter.getInitialState({
+  status: HttpCallStatusEnum.Pending,
+  error: undefined
+});

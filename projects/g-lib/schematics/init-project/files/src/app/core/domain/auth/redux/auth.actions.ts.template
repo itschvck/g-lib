@@ -1,0 +1,36 @@
+import { createAction, emptyProps, props } from "@ngrx/store";
+import { IError } from "../../http/models/responses/error.response";
+import { LoginRequest } from "../models/requests/login.request";
+import { InternalUserLoggedResponse } from "../models/responses/internal-user-logged.response";
+import { LogoutRequest } from "../models/requests/logout.request";
+
+const initUser = createAction('[Auth] Init User', emptyProps);
+const initUserOK = createAction('[Auth] Init User OK', props<{ user: InternalUserLoggedResponse }>());
+const initUserError = createAction('[Auth] Init User Error', props<{ e: IError }>());
+
+const login = createAction('[Auth] Login', props<{ command: LoginRequest }>());
+const loginOK = createAction('[Auth] Login OK', props<{ user: InternalUserLoggedResponse }>());
+const loginError = createAction('[Auth] Login Error', props<{ e: IError }>());
+
+const logout = createAction('[Auth] Logout', props<{ command: LogoutRequest }>());
+const logoutOK = createAction('[Auth] Logout OK', props<{ idUser: string }>());
+const logoutError = createAction('[Auth] Logout Error', props<{ e: IError | undefined }>());
+
+const tokenExpired = createAction('[Auth] Token Expired', emptyProps);
+
+
+export const a = {
+  initUser,
+  initUserOK,
+  initUserError,
+
+  login,
+  loginOK,
+  loginError,
+
+  logout,
+  logoutOK,
+  logoutError,
+
+  tokenExpired
+}

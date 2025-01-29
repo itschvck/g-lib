@@ -7,6 +7,7 @@ const <%= camelize(name) %>State$ = createFeatureSelector<<%= classify(name) %>S
 const {selectAll, selectEntities } = <%= camelize(name) %>Adapter.getSelectors();
 const all<%= classify(name) %>State$ = createSelector(<%= camelize(name) %>State$, selectAll);
 const entities<%= classify(name) %>State$ = createSelector(<%= camelize(name) %>State$, selectEntities);
+const status$ = createSelector(<%= camelize(name) %>State$, <%= camelize(name) %> =>  <%= camelize(name) %>.status);
 const <%= camelize(name) %>s$ = createSelector(
   all<%= classify(name) %>State$,
   <%= camelize(name) %>s => <%= camelize(name) %>s
@@ -21,6 +22,7 @@ const <%= camelize(name) %>ById$ = (id: number) => createSelector(
 );
 
 export const s = {
+  status$,
   <%= camelize(name) %>s$,
   <%= camelize(name) %>Entities$,
   <%= camelize(name) %>ById$

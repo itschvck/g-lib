@@ -1,6 +1,0 @@
-import { Type } from "@angular/core";
-import { FunctionalEffect } from "@ngrx/effects";
-
-export const appEffects: Array<Type<unknown> | Record<string, FunctionalEffect>> = [
-  // EntityEffect
-];

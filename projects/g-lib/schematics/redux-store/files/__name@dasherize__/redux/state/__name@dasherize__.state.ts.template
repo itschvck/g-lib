@@ -1,14 +1,12 @@
 import { EntityState } from "@ngrx/entity";
 import { <%= classify(name) %>Response } from '../../models/responses/<%= dasherize(name) %>.response';
 import { <%= camelize(name) %>Adapter } from '../config/<%= dasherize(name) %>.adapter';
+import { HttpCallState } from "../../../../http/http-call.state";
+import { HttpCallStatusEnum } from "../../../../http/models/enums/http-call-status.enum";
 
-export type <%= classify(name) %>State = {
-  status: string;
-  error: string | undefined;
-} & EntityState<<%= classify(name) %>Response>
+export type <%= classify(name) %>State = { } & EntityState<<%= classify(name) %>Response> & HttpCallState;
 
 export const initialState: <%= classify(name) %>State = <%= camelize(name) %>Adapter.getInitialState({
-  // Initialize other properties here
-  status: 'idle',
+  status: HttpCallStatusEnum.Pending,
   error: undefined
 });

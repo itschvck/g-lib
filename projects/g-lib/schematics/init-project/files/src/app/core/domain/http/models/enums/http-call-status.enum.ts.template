@@ -1,4 +1,4 @@
-export enum HttpCallStatus {
+export enum HttpCallStatusEnum {
   Pending = 'pending',
   Loading = 'loading',
   Error = 'error',

@@ -1,0 +1,67 @@
+import { inject, Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { Router } from "@angular/router";
+import { catchError, distinctUntilChanged, exhaustMap, map, of, tap } from "rxjs";
+import { authDomain } from "./config/auth.domain";
+import { AuthService } from "../services/auth.service";
+import { IError } from "../../http/models/responses/error.response";
+
+@Injectable()
+export class AuthEffects {
+  a$ = inject(Actions);
+  store = inject(Store);
+  service = inject(AuthService);
+  router = inject(Router);
+
+  initUser$ = createEffect(() => this.a$.pipe(
+      ofType(authDomain.a.initUser),
+      distinctUntilChanged(),
+      exhaustMap(() => this.service.initUser().pipe(
+        map(user => {
+          this.router.navigate(['']);
+          return authDomain.a.initUserOK({ user: user })
+        }),
+        catchError((e: IError) => {
+          this.router.navigate(['/Login']);
+          return of(authDomain.a.initUserError({ e: e }))
+        })
+      ))
+    ));
+  
+    login$ = createEffect(() => this.a$.pipe(
+      ofType(authDomain.a.login),
+      distinctUntilChanged(),
+      exhaustMap(a => this.service.login(a.command).pipe(
+        map(user => {
+          this.router.navigate(['']);
+          return authDomain.a.loginOK({ user: user });
+        }),
+        catchError((e: IError) => of(authDomain.a.loginError({ e: e })))
+      ))
+    ));
+  
+    logout$ = createEffect(() => this.a$.pipe(
+      ofType(authDomain.a.logout),
+      distinctUntilChanged(),
+      exhaustMap(a => this.service.logout(a.command).pipe(
+        map(ok => {
+          if (ok) {
+            return authDomain.a.logoutOK({ idUser: a.command.idUser });
+          }
+          else {
+            return authDomain.a.logoutError({ e: undefined });
+          }
+        }),
+        catchError((e: IError) => of(authDomain.a.logoutError({ e: e })))
+      ))
+    ));
+  
+    tokenExpired$ = createEffect(() => this.a$.pipe(
+      ofType(authDomain.a.tokenExpired, authDomain.a.logoutOK),
+      distinctUntilChanged(),
+      tap(() => {
+        this.router.navigate(['/Login']);
+      })
+    ), { dispatch: false });
+}

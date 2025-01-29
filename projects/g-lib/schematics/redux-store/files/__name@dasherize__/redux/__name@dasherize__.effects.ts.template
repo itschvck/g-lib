@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { catchError, distinctUntilChanged, exhaustMap, map, of } from "rxjs";
 import { <%= camelize(name) %>Domain } from "./config/<%= dasherize(name) %>.domain";
 import { <%= classify(name) %>Service } from "../services/<%= dasherize(name) %>.service";
+import { IError } from "../../../http/models/responses/error.response";
 
 @Injectable()
 export class <%= classify(name) %>Effects {
@@ -18,7 +19,7 @@ export class <%= classify(name) %>Effects {
     distinctUntilChanged(),
     exhaustMap(a => this.service.get<%= classify(name) %>().pipe(
       map(<%= camelize(name) %>s => <%= camelize(name) %>Domain.a.<%= camelize(name) %>OK({ <%= camelize(name) %>s: <%= camelize(name) %>s })),
-      catchError((error: any) => of(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Error({ error: 'error' })))
+      catchError((e: IError) => of(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Error({ e: e })))
     ))
   ));
 
@@ -27,7 +28,7 @@ export class <%= classify(name) %>Effects {
     distinctUntilChanged(),
     exhaustMap(a => this.service.add<%= classify(name) %>(a.request).pipe(
       map(<%= camelize(name) %> => <%= camelize(name) %>Domain.a.add<%= classify(name) %>OK({ <%= camelize(name) %>: <%= camelize(name) %> })),
-      catchError((error: any) => of(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Error({ error: 'error' })))
+      catchError((e: IError) => of(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Error({ e: e })))
     ))
   ));
 
@@ -36,7 +37,7 @@ export class <%= classify(name) %>Effects {
     distinctUntilChanged(),
     exhaustMap(a => this.service.edit<%= classify(name) %>(a.request).pipe(
       map(<%= camelize(name) %> => <%= camelize(name) %>Domain.a.edit<%= classify(name) %>OK({ <%= camelize(name) %>: <%= camelize(name) %> })),
-      catchError((error: any) => of(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Error({ error: 'error' })))
+      catchError((e: IError) => of(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Error({ e: e })))
     ))
   ));
 
@@ -45,7 +46,7 @@ export class <%= classify(name) %>Effects {
     distinctUntilChanged(),
     exhaustMap(a => this.service.remove<%= classify(name) %>(a.request).pipe(
       map(<%= camelize(name) %> => <%= camelize(name) %>Domain.a.remove<%= classify(name) %>OK({ id: a.request.id })),
-      catchError((error: any) => of(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Error({ error: 'error' })))
+      catchError((e: IError) => of(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Error({ e: e })))
     ))
   ));
 }

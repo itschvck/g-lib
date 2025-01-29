@@ -2,27 +2,28 @@ import { <%= camelize(name) %>Adapter } from "./config/<%= dasherize(name) %>.ad
 import { <%= camelize(name) %>Domain } from "./config/<%= dasherize(name) %>.domain";
 import { initialState } from "./state/<%= dasherize(name) %>.state";
 import { createReducer, on } from "@ngrx/store";
+import { HttpCallStatusEnum } from "../../../http/models/enums/http-call-status.enum";
 
 export const <%= camelize(name) %>Reducer = createReducer(
   initialState,
 
   // get <%= classify(name) %>
-  on(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Load, (s$) => ({ ...s$, status: 'loading', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.<%= camelize(name) %>OK, (s$, { <%= camelize(name) %>s }) => <%= camelize(name) %>Adapter.upsertMany(<%= camelize(name) %>s, { ...s$, status: 'ok', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Error, (s$, { error }) => ({ ...s$, status: 'error', error: error })),
+  on(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Load, (s$) => ({ ...s$, status: HttpCallStatusEnum.Loading, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.<%= camelize(name) %>OK, (s$, { <%= camelize(name) %>s }) => <%= camelize(name) %>Adapter.upsertMany(<%= camelize(name) %>s, { ...s$, status: HttpCallStatusEnum.Success, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.<%= camelize(name) %>Error, (s$, { e }) => ({ ...s$, status: HttpCallStatusEnum.Error, error: e })),
 
   // add <%= classify(name) %>
-  on(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Load, (s$) => ({ ...s$, status: 'loading', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.add<%= classify(name) %>OK, (s$, { <%= camelize(name) %> }) => <%= camelize(name) %>Adapter.upsertOne(<%= camelize(name) %>, { ...s$, status: 'ok', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Error, (s$, { error }) => ({ ...s$, status: 'error', error: error })),
+  on(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Load, (s$) => ({ ...s$, status: HttpCallStatusEnum.Loading, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.add<%= classify(name) %>OK, (s$, { <%= camelize(name) %> }) => <%= camelize(name) %>Adapter.upsertOne(<%= camelize(name) %>, { ...s$, status: HttpCallStatusEnum.Success, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.add<%= classify(name) %>Error, (s$, { e }) => ({ ...s$, status: HttpCallStatusEnum.Error, error: e })),
 
   // edit <%= classify(name) %>
-  on(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Load, (s$) => ({ ...s$, status: 'loading', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>OK, (s$, { <%= camelize(name) %> }) => <%= camelize(name) %>Adapter.upsertOne(<%= camelize(name) %>, { ...s$, status: 'ok', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Error, (s$, { error }) => ({ ...s$, status: 'error', error: error })),
+  on(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Load, (s$) => ({ ...s$, status: HttpCallStatusEnum.Loading, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>OK, (s$, { <%= camelize(name) %> }) => <%= camelize(name) %>Adapter.upsertOne(<%= camelize(name) %>, { ...s$, status: HttpCallStatusEnum.Success, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.edit<%= classify(name) %>Error, (s$, { e }) => ({ ...s$, status: HttpCallStatusEnum.Error, error: e })),
 
   // remove <%= classify(name) %>
-  on(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Load, (s$) => ({ ...s$, status: 'loading', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>OK, (s$, { id }) => <%= camelize(name) %>Adapter.removeOne(id, { ...s$, status: 'ok', error: undefined })),
-  on(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Error, (s$, { error }) => ({ ...s$, status: 'error', error: error })),
+  on(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Load, (s$) => ({ ...s$, status: HttpCallStatusEnum.Loading, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>OK, (s$, { id }) => <%= camelize(name) %>Adapter.removeOne(id, { ...s$, status: HttpCallStatusEnum.Success, error: undefined })),
+  on(<%= camelize(name) %>Domain.a.remove<%= classify(name) %>Error, (s$, { e }) => ({ ...s$, status: HttpCallStatusEnum.Error, error: e })),
 );

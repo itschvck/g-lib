@@ -1,0 +1,8 @@
+import { Type } from "@angular/core";
+import { FunctionalEffect } from "@ngrx/effects";
+import { AuthEffects } from "../../domain/auth/redux/auth.effects";
+
+export const appEffects: Array<Type<unknown> | Record<string, FunctionalEffect>> = [
+  // EntityEffect
+  AuthEffects
+];
