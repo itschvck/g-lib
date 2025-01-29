@@ -6,11 +6,13 @@ import { provideHttpClient, withFetch, withInterceptors } from "@angular/common/
 import { authInterceptor } from "./core/interceptors/auth.interceptor";
 import { errorInterceptor } from "./core/interceptors/error.interceptor";
 import { initFn } from "./core/global/fn/init.fn";
-
 <% if (store === 'normal') { %>
-  import { AppState } from './core/domain/app/redux/state/app.state';
-  import { appReducers } from './core/domain/app/redux/app.reducers';
-  import { appEffects } from './core/domain/app/redux/app.effects';
+import { AppState } from "./core/app-store/redux/state/app.state";
+import { appReducers } from "./core/app-store/redux/app.reducers";
+import { appEffects } from "./core/app-store/redux/app.effects";
+import { provideStore } from "@ngrx/store";
+import { provideEffects } from "@ngrx/effects";
+import { provideStoreDevtools } from "@ngrx/store-devtools";
 <% } %>
 
 export const appConfig: ApplicationConfig = {
@@ -21,9 +23,9 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(initFn),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor]), withFetch()),
     <% if (store === 'normal') { %>
-      provideStore<AppState>(appReducers),
-      provideEffects(appEffects),
-      provideStoreDevtools({ maxAge: 25, logOnly: true, autoPause: true, trace: true, traceLimit: 75 }),
+    provideStore<AppState>(appReducers),
+    provideEffects(appEffects),
+    provideStoreDevtools({ maxAge: 25, logOnly: true, autoPause: true, trace: true, traceLimit: 75 }),
     <% } %>
   ]
 };

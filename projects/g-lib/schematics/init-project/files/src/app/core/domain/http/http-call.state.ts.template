@@ -1,5 +1,5 @@
 import { HttpCallStatus } from './models/enums/http-call-status.enum';
-import { IError } from './models/responses/error.response';
+import { IError } from "./models/responses/error.response";
 
 export type HttpCallState = {
   status: HttpCallStatus,

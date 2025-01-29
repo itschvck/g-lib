@@ -15,7 +15,7 @@ const files = (icon: string) => `${ baseUrl }/files/${ icon }.svg`;
 const finance = (icon: string) => `${ baseUrl }/finance/${ icon }.svg`;
 const general = (icon: string) => `${ baseUrl }/general/${ icon }.svg`;
 const graphs = (icon: string) => `${ baseUrl }/graphs/${ icon }.svg`;
-const itNetwork = (icon: string) => `${ baseUrl }/it-${ icon }.svgnetwork/`;
+const itNetwork = (icon: string) => `${ baseUrl }/it-network/${ icon }.svg`;
 const layouts = (icon: string) => `${ baseUrl }/layouts/${ icon }.svg`;
 const location = (icon: string) => `${ baseUrl }/location/${ icon }.svg`;
 const maps = (icon: string) => `${ baseUrl }/maps/${ icon }.svg`;
