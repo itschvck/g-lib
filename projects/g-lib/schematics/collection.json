@@ -11,13 +11,13 @@
     },
     "init-project": {
       "description": "Initialize the projects with DJ's standards",
-      "factory": "./init-project#initProject",
+      "factory": "./init-project/index#initProject",
       "schema": "./init-project/schema.json",
       "aliases": ["init"]
     },
     "apply-templates-fn": {
       "description": "Applies the templates",
-      "factory": "./init-project#applyTemplatesFn"
+      "factory": "./init-project/index#applyTemplatesFn"
     },
     "redux-store": {
       "description": "This schematics generates a ngrx store for an entity",

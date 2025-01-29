@@ -14,7 +14,7 @@ import {
 import { normalize, strings } from '@angular-devkit/core';
 import { addPackageJsonDependency, NodeDependency, NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-import { InitProjectSchema } from './init-project.schema';
+import { InitProjectSchema } from './init-project.interface';
 
 export function initProject(options: InitProjectSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
@@ -88,7 +88,7 @@ export function applyTemplatesFn(options: InitProjectSchema, projectName: string
         prefix: prefix,
         store: options.store.toString(),
       }),
-      move(normalize(`.`)),
+      move(normalize(`./`)),
     ]);
     return chain([mergeWith(templateSource, MergeStrategy.Overwrite)]);
   };
