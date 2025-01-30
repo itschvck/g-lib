@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { currentYear } from '../../../global/config/current-year';
 
 @Component({
   selector: '<%= prefix %>-footer',
   imports: [],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  styleUrl: './footer.component.<%= style %>'
 })
 export class FooterComponent {
-
+  protected readonly currentYear = currentYear;
 }

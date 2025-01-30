@@ -1,1 +1,47 @@
-<p>header works!</p>
+<!--begin::header-->
+<div class="header flex flex-row justify-between items-center p-4">
+  <!--begin::header left part-->
+  <div class="flex flex-row gap-3 items-center">
+    <!--begin::burger menu-->
+    <div class="lg:hidden">
+      <button type="button" class="g-button-action" (click)="toggleAside();$event.stopPropagation();">
+        <span [inlineSVG]="duotune.general('gen024')" class="svg-icon svg-icon-2 svg-icon-primary"></span>
+      </button>
+    </div>
+    <!--end::burger menu-->
+
+    <!--begin::logo-->
+    <div class="bg-no-repeat bg-contain">
+      <h2 class="text-primary my-auto">Logo Here</h2>
+    </div>
+    <!--end::logo-->
+
+    <!--begin::pages-->
+    <!--begin::page 1-->
+    <div class="navlink h-full w-auto py-2 px-4 cursor-pointer rounded font-medium hidden lg:inline-block active">
+        <span>Page 1</span>
+    </div>
+    <!--end::page 1-->
+
+    <!--begin::page 2-->
+    <div class="navlink h-full w-auto py-2 px-4 cursor-pointer rounded font-medium hidden lg:inline-block">
+        <span>Page 2</span>
+    </div>
+    <!--end::page 2-->
+
+    <!--begin::page 3-->
+    <div class="navlink h-full w-auto py-2 px-4 cursor-pointer rounded font-medium hidden lg:inline-block">
+        <span>Page 3</span>
+    </div>
+    <!--end::page 3-->
+    <!--end::pages-->
+  </div>
+  <!--end::header left part-->
+
+  <!--begin::header right part-->
+  <div class="flex flex-row justify-end items-center gap-4 lg:gap-10">
+
+  </div>
+  <!--end::header right part-->
+</div>
+<!--end::header-->

@@ -1,0 +1,4 @@
+.footer {
+  min-height: var(--footer-height);
+  background-color: var(--blumelli);
+}

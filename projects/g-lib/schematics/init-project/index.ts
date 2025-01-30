@@ -36,8 +36,41 @@ export function initProject(options: InitProjectSchema): Rule {
       throw new Error(`Project "${ projectName }" not found in angular.json.`);
     }
 
-    // Install npm packages separately with force flag
+    // Step 2: Update the assets array in both build and test configurations
+    ['build', 'test'].forEach((target) => {
+      const targetConfig = projectConfig.architect[target];
+      if (targetConfig?.options?.assets) {
+        const assets = targetConfig.options.assets;
 
+        if (!Array.isArray(assets)) {
+          throw new Error(`Invalid assets format in "${target}" target.`);
+        }
+
+        const newAssets = ['src/favicon.ico', 'src/assets'];
+        newAssets.forEach((newAsset) => {
+          if (!assets.some((existingAsset) => {
+            if (typeof existingAsset === 'string') {
+              return existingAsset === newAsset;
+            }
+            if (typeof existingAsset === 'object' && existingAsset.input) {
+              return existingAsset.input === newAsset;
+            }
+            return false;
+          })) {
+            assets.push(newAsset);
+          }
+        });
+        _context.logger.info(`Updated assets array for "${target}" target.`);
+      } else {
+        _context.logger.warn(`No assets configuration found for "${target}" target.`);
+      }
+    });
+
+    // Step 3: Write the updated angular.json file
+    _tree.overwrite('angular.json', JSON.stringify(workspaceJson, null, 2));
+    _context.logger.info('angular.json has been updated successfully.');
+
+    // Step4: Install npm packages separately with force flag
     let npmPackages = [
       { packageManager: 'npm', packageName: 'tailwindcss @tailwindcss/postcss postcss --force' },
       { packageManager: 'npm', packageName: 'moment --save' },
@@ -62,14 +95,18 @@ export function initProject(options: InitProjectSchema): Rule {
 
     _context.logger.info('Adding Environments...');
 
-    // Apply templates directly
+    // Step 5: Apply templates directly
     return applyTemplatesFn(options, projectName, projectConfig.prefix)(_tree, _context);
   };
 }
 
 
 export function applyTemplatesFn(options: InitProjectSchema, projectName: string, prefix: string): Rule {
-  return () => {
+  return (_tree: Tree, _context: SchematicContext) => {
+    // Detect the style format
+    const style = getStyleFormat(_tree);
+    _context.logger.info(`Detected style format: ${ style }`);
+
     // Define the source for your templates
     const templateSource = apply(url('./files'), [
       filter((path) => {
@@ -84,8 +121,8 @@ export function applyTemplatesFn(options: InitProjectSchema, projectName: string
         if (path.includes('src/app/core/domain/auth/auth.store.ts.template') && options.store !== 'signal') {
           return false;
         }
-        // Ensure ".postcssrc.json.template" is always included
-        if (path.includes('.postcssrc.json.template')) {
+        // Ensure ".postcssrc.json" is always included
+        if (path.includes('.postcssrc.json')) {
           return true; // Always include this file
         }
         return true;
@@ -97,6 +134,7 @@ export function applyTemplatesFn(options: InitProjectSchema, projectName: string
         projectName: projectName,
         prefix: prefix,
         store: options.store.toString(),
+        style: style
       }),
       move(normalize(`./`)),
     ]);
@@ -108,4 +146,21 @@ export function generateEnvironments(projectName: string): Rule {
   return externalSchematic('@schematics/angular', 'environments', {
     project: projectName,
   });
+}
+
+function getStyleFormat(_tree: Tree): string {
+  const workspaceConfigBuffer = _tree.read('angular.json');
+  if (!workspaceConfigBuffer) {
+    throw new Error('Could not find angular.json');
+  }
+
+  const workspaceJson = JSON.parse(workspaceConfigBuffer.toString());
+  const projectName = Object.keys(workspaceJson.projects)[0];
+  const projectConfig = workspaceJson.projects[projectName];
+
+  // Check the schematics configuration for default style
+  const defaultStyle = projectConfig.schematics?.['@schematics/angular:component']?.style;
+
+  // Return the detected style or default to 'css'
+  return defaultStyle || 'css';
 }

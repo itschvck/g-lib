@@ -1,0 +1,3 @@
+import moment from "moment/moment";
+import { signal } from "@angular/core";
+export const currentYear = signal(moment().format('YYYY'));

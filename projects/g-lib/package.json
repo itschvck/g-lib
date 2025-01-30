@@ -1,9 +1,9 @@
 {
   "name": "g-lib",
-  "version": "0.0.79",
+  "version": "0.1.0",
   "scripts": {
     "build": "tsc -p tsconfig.shcematics.json",
-    "postbuild": "copyfiles schematics/collection.json schematics/*/schema.json schematics/*/files/** ../../dist/g-lib/"
+    "postbuild": "copyfiles schematics/collection.json schematics/*/schema.json -a schematics/*/files/** ../../dist/g-lib/"
   },
   "publishConfig": {
     "registry": "http://localhost:4873"

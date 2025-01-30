@@ -1,6 +1,18 @@
 import { inject } from '@angular/core';
+<% if (store === 'normal') { %>
+import { Store } from "@ngrx/store";
+import { authDomain } from "../../domain/auth/redux/config/auth.domain";
+<% } %>
+<% if (store === 'signal') { %>
 import { AuthStore } from "../../domain/auth/auth.store";
+<% } %>
 
 export const initFn = () => {
+<% if (store === 'normal') { %>
+  const store = inject(Store);
+  store.dispatch(authDomain.a.initUser());
+<% } %>
+<% if (store === 'signal') { %>
   inject(AuthStore).initUser();
+<% } %>
 }

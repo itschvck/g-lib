@@ -1,1 +1,19 @@
-<p>footer works!</p>
+<!--begin::footer-->
+<div class="footer flex flex-col lg:flex-row justify-start lg:justify-between items-start lg:items-center p-3 lg:p-4 gap-3 lg:gap-4">
+  <!--begin::icon and copyright-->
+  <div class="flex flex-col lg:flex-row justify-start items-start lg:justify-center lg:items-center gap-3 lg:gap-4">
+    <img
+      src="./assets/logos/white-gemelli.svg"
+      class="w-[120px] h-[40px] object-cover"
+      alt="Fondazione Policlinico Universitario Agostino Gemelli IRCCS"
+      [title]="'Fondazione Policlinico Universitario Agostino Gemelli IRCCS'">
+    <span class="text-white text-sm"><span class="text-white font-bold">{{ currentYear() }}</span>© Fondazione Policlinico Universitario Agostino Gemelli IRCCS | Codice Fiscale e P.IVA n. 13109681000<br>Sede Legale Largo Francesco Vito 1, 00168 Roma | Sede Operativa Largo Agostino Gemelli 8, 00168 Roma</span>
+  </div>
+  <!--end::icon and copyright-->
+  <!--begin::dwh-->
+  <div class="flex flex-col justify-start lg:justify-center items-start lg:items-center">
+    <span class="text-white text-sm">DWH, Sistemi Informativi Dipartimentali e della Ricerca</span>
+  </div>
+  <!--end::dwh-->
+</div>
+<!--end::footer-->

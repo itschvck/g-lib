@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
+import { InlineSVGModule } from "ng-inline-svg-2";
+import { duotune } from "../../../global/config/duotune";
 
 @Component({
   selector: '<%= prefix %>-header',
-  imports: [],
+  imports: [
+    InlineSVGModule
+  ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.<%= style %>'
 })
 export class HeaderComponent {
+  toggleAside() {
 
+  }
+  protected readonly duotune = duotune;
 }

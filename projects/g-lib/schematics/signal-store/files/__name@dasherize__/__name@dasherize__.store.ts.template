@@ -1,7 +1,6 @@
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { addEntities, addEntity, updateEntity, removeEntity, withEntities } from '@ngrx/signals/entities';
 import { computed, inject } from '@angular/core';
-import { Router } from "@angular/router";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { distinctUntilChanged, map, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from "@ngrx/operators";

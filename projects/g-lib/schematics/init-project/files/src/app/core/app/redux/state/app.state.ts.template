@@ -1,5 +1,5 @@
-import { authKey } from "../../../auth/redux/config/auth.key";
-import { AuthState } from "../../../auth/redux/state/auth.state";
+import { authKey } from "../../../domain/auth/redux/config/auth.key";
+import { AuthState } from "../../../domain/auth/redux/state/auth.state";
 
 export type AppState = {
   // [entityKey]: EntityState

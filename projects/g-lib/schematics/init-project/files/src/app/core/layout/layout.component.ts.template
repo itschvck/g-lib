@@ -13,7 +13,7 @@ import { FooterComponent } from "./components/footer/footer.component";
     FooterComponent
   ],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+  styleUrl: './layout.component.<%= style %>'
 })
 export class LayoutComponent {
 
