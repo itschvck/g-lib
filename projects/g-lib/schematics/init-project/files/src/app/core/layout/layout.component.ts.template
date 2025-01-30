@@ -7,6 +7,8 @@ import { FooterComponent } from "./components/footer/footer.component";
   selector: '<%= prefix %>-layout',
   imports: [
     RouterOutlet,
+    // TODO: uncomment if you want to include aside component in your application
+    // AsideComponent,
     HeaderComponent,
     FooterComponent
   ],

@@ -1,0 +1,4 @@
+export type <%= classify(name) %>Response = {
+  id: number;
+  // ...properties
+};

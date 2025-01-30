@@ -1,3 +1,32 @@
-<<%= prefix %>-header></<%= prefix %>-header>
-<router-outlet></router-outlet>
-<<%= prefix %>-footer></<%= prefix %>-footer>
+<!--begin::layout-->
+<div>
+  <!--begin::aside, header, content, and footer wrapper-->
+  <div class="flex">
+    <!--begin::aside, header, content, and footer-->
+    <div class="flex flex-cool w-full relative">
+      <!--TODO: uncomment if you want to include aside component in your application-->
+      <!--begin::aside-->
+      <!--<<%= prefix %>-aside></<%= prefix %>-aside>-->
+      <!--end::aside-->
+
+      <!--begin::header component-->
+      <div #headerComponent class="fixed top-0 left-0 w-full z-30">
+        <<%= prefix %>-header></<%= prefix %>-header>
+      </div>
+      <!--end::header component-->
+
+      <!--begin::content-->
+      <div class="layout-content flex flex-col w-full">
+      <router-outlet></router-outlet>
+      </div>
+      <!--end::content-->
+
+      <!--begin::footer-->
+      <<%= prefix %>-footer></<%= prefix %>-footer>
+      <!--end::footer-->
+    </div>
+    <!--end::aside, header, content, and footer-->
+  </div>
+  <!--end::aside, header, content, and footer wrapper-->
+<div>
+<!--end::layout-->

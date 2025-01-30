@@ -1,0 +1,81 @@
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { addEntity, removeEntity, withEntities } from '@ngrx/signals/entities';
+import { computed, inject } from '@angular/core';
+import { Router } from "@angular/router";
+import { AuthService } from './services/auth.service';
+import { rxMethod } from "@ngrx/signals/rxjs-interop";
+import { pipe, switchMap, tap } from 'rxjs';
+import { tapResponse } from "@ngrx/operators";
+import { InternalUserLoggedResponse } from "./models/responses/internal-user-logged.response";
+import { httpCallStateInitialValue } from '../http/http-call.state';
+import { LoginRequest } from "./models/requests/login.request";
+import { LogoutRequest } from "./models/requests/logout.request";
+import { HttpCallStatusEnum } from "../http/models/enums/http-call-status.enum";
+import { IError } from "../http/models/responses/error.response";
+
+export const AuthStore = signalStore(
+  { providedIn: 'root' },
+  withEntities<InternalUserLoggedResponse>(),
+  withState(httpCallStateInitialValue),
+  withComputed(s$ => {
+    return {
+      loggedUser: computed(() => s$.entities()[0] ?? undefined)
+    }
+  }),
+  withComputed(s$ => {
+    return {
+      logoutRequest: computed(() => (<LogoutRequest>{
+        idUser: s$.loggedUser().id,
+        idAccess: s$.loggedUser().accessId
+      }))
+    }
+  }),
+  withMethods(() => {
+    const router = inject(Router);
+    return {
+      tokenExpired() {
+        router.navigate(['/Login']);
+      }
+    }
+  }),
+  withMethods(s$ => {
+    const service = inject(AuthService);
+    const router = inject(Router);
+    
+    return {
+      initUser: rxMethod<void>(pipe(
+        tap(() => patchState(s$, { status: HttpCallStatusEnum.Loading })),
+        switchMap(() => service.initUser()),
+        tapResponse({
+          next: user => {
+            patchState(s$, addEntity(user), { status: HttpCallStatusEnum.Success });
+            router.navigate(['/']);
+          },
+          error: (error: IError) => patchState(s$, { status: HttpCallStatusEnum.Error, error: error })
+        })
+      )),
+      login: rxMethod<LoginRequest>(pipe(
+        tap(() => patchState(s$, { status: HttpCallStatusEnum.Loading })),
+        switchMap(request => service.login(request)),
+        tapResponse({
+          next: user => {
+            patchState(s$, addEntity(user), {status: HttpCallStatusEnum.Success});
+            router.navigate(['/']);
+          },
+          error: (error: IError) => patchState(s$, { status: HttpCallStatusEnum.Error, error: error })
+        })
+      )),
+      logout: rxMethod<void>(pipe(
+        tap(() => patchState(s$, { status: HttpCallStatusEnum.Loading })),
+        switchMap(() => service.logout(s$.logoutRequest())),
+        tapResponse({
+          next: request => {
+            patchState(s$, removeEntity(s$.logoutRequest().idUser), {status: HttpCallStatusEnum.Success});
+            s$.tokenExpired();
+          },
+          error: (error: IError) => patchState(s$, { status: HttpCallStatusEnum.Error, error: error })
+        })
+      ))
+    }
+  })
+);

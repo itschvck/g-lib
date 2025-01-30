@@ -6,9 +6,9 @@ import {
   url
 } from "@angular-devkit/schematics";
 import { strings, normalize } from "@angular-devkit/core";
-import { ReduxStoreSchema } from "./redux-store.interface";
+import { SignalStoreSchema } from "./signal-store.interface";
 
-export function reduxStore(options: ReduxStoreSchema): Rule {
+export function signalStore(options: SignalStoreSchema): Rule {
   return () => {
     const templateSource = apply(
       url('./files'), [

@@ -1,0 +1,70 @@
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { addEntities, addEntity, updateEntity, removeEntity, withEntities } from '@ngrx/signals/entities';
+import { computed, inject } from '@angular/core';
+import { Router } from "@angular/router";
+import { rxMethod } from "@ngrx/signals/rxjs-interop";
+import { distinctUntilChanged, map, pipe, switchMap, tap } from 'rxjs';
+import { tapResponse } from "@ngrx/operators";
+
+import { <%= classify(name) %>Service } from './services/<%= dasherize(name) %>.service';
+import { <%= classify(name) %>Response } from './models/responses/<%= dasherize(name) %>.response';
+import { New<%= classify(name) %>Request } from './models/requests/new-<%= dasherize(name) %>.request';
+import { Edit<%= classify(name) %>Request } from './models/requests/edit-<%= dasherize(name) %>.request';
+import { Remove<%= classify(name) %>Request } from './models/requests/remove-<%= dasherize(name) %>.request';
+
+import { HttpCallStatusEnum } from "../../http/models/enums/http-call-status.enum";
+import { IError } from "../../http/models/responses/error.response";
+import { httpCallStateInitialValue } from '../../http/http-call.state';
+
+export const <%= classify(name) %>Store = signalStore(
+  { providedIn: 'root' },
+  withEntities<<%= classify(name) %>Response>(),
+  withState(httpCallStateInitialValue),
+  withComputed(s$ => {
+  return {
+    <%= camelize(name) %>s: computed(() => s$.entities())
+  }
+  }),
+  withMethods(s$ => {
+    const service = inject(<%= classify(name) %>Service);
+
+    return {
+      load:rxMethod<void>(pipe(
+        tap(() => patchState(s$, { status: HttpCallStatusEnum.Loading, error: undefined })),
+        switchMap(() => service.get<%= classify(name) %>()),
+        tapResponse({
+          next: <%= camelize(name) %>s => patchState(s$, addEntities(<%= camelize(name) %>s), { status: HttpCallStatusEnum.Success, error: undefined }),
+          error: (error: IError) => patchState(s$, { status: HttpCallStatusEnum.Error, error: error })
+        })
+      )),
+      add:rxMethod<New<%= classify(name) %>Request>(pipe(
+        tap(() => patchState(s$, { status: HttpCallStatusEnum.Loading, error: undefined })),
+        switchMap(request => service.add<%= classify(name) %>(request)),
+        tapResponse({
+          next: <%= camelize(name) %> => patchState(s$, addEntity(<%= camelize(name) %>), { status: HttpCallStatusEnum.Success, error: undefined }),
+          error: (error: IError) => patchState(s$, { status: HttpCallStatusEnum.Error, error: error })
+        })
+      )),
+      edit: rxMethod<Edit<%= classify(name) %>Request>(pipe(
+        tap(() => patchState(s$, { status: HttpCallStatusEnum.Loading, error: undefined })),
+        switchMap(request => service.edit<%= classify(name) %>(request)),
+        distinctUntilChanged(),
+        tapResponse({
+          next: <%= camelize(name) %> => patchState(s$, updateEntity({ id: <%= camelize(name) %>.id, changes: <%= camelize(name) %> }), { status: HttpCallStatusEnum.Success, error: undefined }),
+          error: (error: IError) => patchState(s$, { status: HttpCallStatusEnum.Error, error: error })
+        })
+      )),
+      delete: rxMethod<Remove<%= classify(name) %>Request>(pipe(
+        tap(() => patchState(s$, { status: HttpCallStatusEnum.Loading, error: undefined })),
+        switchMap(request => service.remove<%= classify(name) %>(request).pipe(
+          map(() => request.id)
+        )),
+        distinctUntilChanged(),
+        tapResponse({
+          next: id => patchState(s$, removeEntity(id), { status: HttpCallStatusEnum.Success, error: undefined }),
+          error: (error: IError) => patchState(s$, { status: HttpCallStatusEnum.Error, error: error })
+        })
+      ))
+    }
+  })
+);

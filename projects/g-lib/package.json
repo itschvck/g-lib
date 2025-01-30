@@ -1,6 +1,6 @@
 {
   "name": "g-lib",
-  "version": "0.0.75",
+  "version": "0.0.79",
   "scripts": {
     "build": "tsc -p tsconfig.shcematics.json",
     "postbuild": "copyfiles schematics/collection.json schematics/*/schema.json schematics/*/files/** ../../dist/g-lib/"

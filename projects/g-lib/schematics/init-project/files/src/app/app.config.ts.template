@@ -5,7 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withFetch, withInterceptors } from "@angular/common/http";
 import { authInterceptor } from "./core/interceptors/auth.interceptor";
 import { errorInterceptor } from "./core/interceptors/error.interceptor";
-import { initFn } from "./core/global/fn/init.fn";
+import { initFn } from "./core/factory/fn/init.fn";
 <% if (store === 'normal') { %>
 import { AppState } from "./core/app/redux/state/app.state";
 import { appReducers } from "./core/app/redux/app.reducers";

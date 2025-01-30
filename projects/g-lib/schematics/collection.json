@@ -24,6 +24,12 @@
       "factory": "./redux-store/index#reduxStore",
       "schema": "./redux-store/schema.json",
       "aliases": ["rs"]
+    },
+    "signal-store": {
+      "description": "This schematics generates a signal store for an entity",
+      "factory": "./signal-store/index#signalStore",
+      "schema": "./signal-store/schema.json",
+      "aliases": ["ss"]
     }
   }
 }

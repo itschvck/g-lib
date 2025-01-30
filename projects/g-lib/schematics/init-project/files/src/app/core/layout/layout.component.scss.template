@@ -1,0 +1,10 @@
+.layout-content {
+  min-height: calc(100dvh - var(--header-height) - var(--footer-height));
+  margin-top: var(--header-height);
+  background-size: 100% 50px;
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
+}
+.scrolled-down-class {
+  box-shadow: 0 10px 30px #523f690d;
+}

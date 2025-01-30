@@ -1,0 +1,6 @@
+import { inject } from '@angular/core';
+import { AuthStore } from "../../domain/auth/auth.store";
+
+export const initFn = () => {
+  inject(AuthStore).initUser();
+}
