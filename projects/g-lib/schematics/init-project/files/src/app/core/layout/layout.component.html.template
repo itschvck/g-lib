@@ -3,7 +3,7 @@
   <!--begin::aside, header, content, and footer wrapper-->
   <div class="flex">
     <!--begin::aside, header, content, and footer-->
-    <div class="flex flex-cool w-full relative">
+    <div class="flex flex-col w-full relative">
       <!--TODO: uncomment if you want to include aside component in your application-->
       <!--begin::aside-->
       <!--<<%= prefix %>-aside></<%= prefix %>-aside>-->
@@ -17,7 +17,7 @@
 
       <!--begin::content-->
       <div class="layout-content flex flex-col w-full">
-      <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
       </div>
       <!--end::content-->
 
@@ -28,5 +28,5 @@
     <!--end::aside, header, content, and footer-->
   </div>
   <!--end::aside, header, content, and footer wrapper-->
-<div>
+</div>
 <!--end::layout-->
